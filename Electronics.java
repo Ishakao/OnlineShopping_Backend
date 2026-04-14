@@ -11,11 +11,8 @@ public class Electronics extends Product {
         super();
     }
 
-    public Electronics(String t, float p) {
+    public Electronics(String t, double p) {
         super(t, p);
-        if (map.get(this) == null) {
-            map.put(this, new ArrayList<>());
-        }
-        map.get(this).add(this);
+        Main.Catalog.add("Electronics", this);
     }
 }

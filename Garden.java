@@ -10,11 +10,8 @@ public class Garden extends Product {
         super();
     }
 
-    public Garden(String t, float p) {
+    public Garden(String t, double p) {
         super(t, p);
-        if (map.get(this) == null) {
-            map.put(this, new ArrayList<>());
-        }
-        map.get(this).add(this);
+        Main.Catalog.add("Garden", this);
     }
 }
