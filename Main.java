@@ -10,6 +10,12 @@ public class Main {
         pass;
     }
 
+    enum SortType {
+        Id,
+        Title,
+        Price
+    }
+
     public static void main(String[] args) {
         Garden a = new Garden("Flower type 1", 3.15);
         Garden b = new Garden("Tree type 1", 15.99);
@@ -17,6 +23,10 @@ public class Main {
         Electronics d = new Electronics("Computer type 1", 40.75);
         Electronics e = new Electronics("iPhone type 1", 25.99);
         Electronics f = new Electronics("TV type 1", 79.99);
+
+        for (Category cat : Catalog.getCategories()) {
+            cat.SetSortType(SortType.Price);
+        }
 
         Catalog.print();
 
