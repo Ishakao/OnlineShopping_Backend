@@ -1,6 +1,6 @@
 import java.util.*;
 
-public abstract class Product {
+public abstract class Product implements Printable {
     protected int id = 0;
     private String title = "";
     private double price = 0.0f;
@@ -26,6 +26,11 @@ public abstract class Product {
         id = Main.IDUtility.getID(this);
         title = t;
         price = p;
+    }
+
+    @Override
+    public void print() {
+        System.out.printf("\"%s\": \n   ID: %d\n   Price: %f\n", title, id, price);
     }
 
     @Override

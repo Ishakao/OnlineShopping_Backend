@@ -1,9 +1,7 @@
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 
-public class Catalog {
+public class Catalog implements Printable {
     private static HashMap<String, Category> map = new HashMap<>();
 
     public int getQuantity() {
@@ -17,16 +15,19 @@ public class Catalog {
         map.get(category).addProduct(obj);
     }
 
+    @Override
+    public void print() {
+        showCatalog();
+    }
+
     public Collection<Category> getCategories() {
         return map.values();
     }
 
-    public void print() {
-        for (String key : map.keySet()) {
+    public void showCatalog() {
+        map.keySet().forEach(key -> {
             System.out.printf("%s [%d]:\n", key, map.get(key).getID());
-            for (Product pr : map.get(key).getProducts()) {
-                System.out.printf("  - %s |  %f\n", pr.getTitle(), pr.getPrice());
-            }
-        }
+            map.get(key).print();
+        });
     }
 }

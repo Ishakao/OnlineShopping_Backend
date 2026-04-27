@@ -28,7 +28,7 @@ public class Main {
             cat.SetSortType(SortType.Price);
         }
 
-        Catalog.print();
+        Catalog.showCatalog();
 
         Customer customer = new Customer("Ilya", "Tsaplin", 1488);
         customer.deposit(144);

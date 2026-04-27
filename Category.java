@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Category {
+public class Category implements Printable {
     private ArrayList<Product> products = new ArrayList<>();
     private int id = 0;
     private Main.SortType sortType = Main.SortType.Id;
@@ -31,6 +31,11 @@ public class Category {
                 }
             }
         });
+    }
+
+    @Override
+    public void print() {
+        products.forEach(x -> System.out.printf("  - %s |  %f\n", x.getTitle(), x.getPrice()));
     }
 
     public int getID() {
