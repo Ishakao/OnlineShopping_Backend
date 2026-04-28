@@ -1,5 +1,6 @@
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Category implements Printable {
     private ArrayList<Product> products = new ArrayList<>();
@@ -35,7 +36,7 @@ public class Category implements Printable {
 
     @Override
     public void print() {
-        products.forEach(x -> System.out.printf("  - %s |  %f\n", x.getTitle(), x.getPrice()));
+        products.stream().forEach(x -> System.out.printf("  - (%d) %s |  %f\n", x.getId(), x.getTitle(), x.getPrice()));
     }
 
     public int getID() {
@@ -50,8 +51,8 @@ public class Category implements Printable {
         products.add(p);
     }
 
-    public ArrayList<Product> getProducts() {
-        return products;
+    public List<Product> getProducts(Predicate<Product> condition) {
+        return products.stream().filter(condition).collect(Collectors.toList());
     }
 
     public void SetSortType(Main.SortType type) {

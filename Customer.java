@@ -34,8 +34,39 @@ public class Customer extends Person implements Financeable {
         Cart.add(p);
     }
 
+    private Product getProductByID(int id) {
+        Product p = null;
+        boolean t = false;
+        for (Category c : Main.Catalog.getCategories()) {
+            if (t) break;
+            for (Product pr : c.getProducts(v -> true)) {
+                if (pr.getId() == id) {
+                    p = pr;
+                    t = true;
+                    break;
+                }
+            }
+        }
+
+        return p;
+    }
+
+    public void addProduct(int id) {
+        Product p = getProductByID(id);
+        if (p != null) {
+            addProduct(p);
+        }
+    }
+
     public void removeProduct(Product p) {
         Cart.remove(p);
+    }
+
+    public void removeProduct(int id) {
+        Product p = getProductByID(id);
+        if (p != null) {
+            removeProduct(p);
+        }
     }
 
     public ProductCart getCart() {

@@ -1,5 +1,4 @@
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 
 public class Catalog implements Printable {
     private static HashMap<String, Category> map = new HashMap<>();
