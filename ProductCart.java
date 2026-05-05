@@ -6,12 +6,33 @@ public class ProductCart implements Payable{
     private Customer customer;
     private boolean paid = false;
 
+    private void lastPay() {
+        customer.addOrder(Cart);
+        paid = true;
+        System.out.println("Purchased successfully");
+    }
+
     public void pay() {
-        if (paid) return;
+        if (paid) {
+            System.out.println("Already paid");
+            return;
+        }
         if (customer.hasEnoughMoney()) {
-            customer.withdraw(amount());
-            paid = true;
-            System.out.println("Purchased successfully");
+            if (customer.balance() >= amount()) {
+                if (customer.withdraw(amount())) {
+                    lastPay();
+                }
+            } else {
+                System.out.println("Not enough money on debit card | Do you want to pay with credit card? [Y/N]");
+                String move = Main.scanner.nextLine();
+                if (move.equals("Y")) {
+                    if (customer.withdraw(amount())) {
+                        lastPay();
+                    }
+                } else {
+                    System.out.println("Not enough money");
+                }
+            }
         } else {
             System.out.println("Not enough money");
         }

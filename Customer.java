@@ -2,28 +2,43 @@ import java.sql.Array;
 import java.util.ArrayList;
 
 public class Customer extends Person implements Financeable {
-    private double wallet = 0;
+    private Wallet wallet = new Wallet(0, 0);
     private Main.FinanceStatus FinanceStatus;
     private ProductCart Cart = new ProductCart(this);
+    private ArrayList<ArrayList<Product>> Orders = new ArrayList<>();
+
+    public boolean paid() {
+        return Cart.isPaid();
+    }
 
     public boolean deposit(double q) {
         if (q <= 0) return false;
-        wallet += q;
-        return true;
+        return wallet.deposit(q);
+    }
+
+    public ArrayList<ArrayList<Product>> getOrders() {
+        return Orders;
+    }
+
+    public void addOrder(ArrayList<Product> a) {
+        Orders.add(a);
     }
 
     public boolean withdraw(double q) {
         if (q <= 0) return false;
-        wallet -= q;
-        return true;
+        return wallet.withdraw(q);
     }
 
-    public double checkBalance() {
-        return wallet;
+    public void printBalance() {
+        System.out.printf("Credit balance: %f\nDebit balance: %f\n", wallet.credit(), wallet.balance());
+    }
+
+    public double balance() {
+        return wallet.balance();
     }
 
     public boolean hasEnoughMoney() {
-        return wallet >= Cart.amount();
+        return wallet.fullBalance() >= Cart.amount();
     }
 
     public Main.FinanceStatus getFinanceStatus() {

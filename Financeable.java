@@ -1,5 +1,6 @@
 public interface Financeable {
-    public double checkBalance();
+    public void printBalance();
+    public double balance();
     public boolean hasEnoughMoney();
     public Main.FinanceStatus getFinanceStatus();
 }

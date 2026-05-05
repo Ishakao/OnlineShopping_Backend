@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 //
 // https://accounts.google.com/v3/signin/accountchooser?continue=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2Fe%2F1FAIpQLSfWbKuSDmAUAggSY8YjMW_9j5VXKznsmnsRKSyIqw_2AE11bA%2Fviewform%3Fusp%3Dheader&dsh=S303256082%3A1774346379493958&followup=https%3A%2F%2Fdocs.google.com%2Fforms%2Fd%2Fe%2F1FAIpQLSfWbKuSDmAUAggSY8YjMW_9j5VXKznsmnsRKSyIqw_2AE11bA%2Fviewform%3Fusp%3Dheader&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&ifkv=AT1y2_V_6A1z14cYUGDuHRBT7lnASXk4IHFjyURnKFQWqhglSfhcl1U7TkpYNZebJbVtj2Jb-ajGCA
 
@@ -18,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Main {
     public static Catalog Catalog = new Catalog();
     public static utils IDUtility = new utils();
-    private static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
     enum FinanceStatus {
         pass;
@@ -64,12 +65,26 @@ public class Main {
                     break;
                 }
                 case 2: {
-                    int move2 = Integer.parseInt(scanner.nextLine());
+                    if (customer.paid()) {
+                        System.out.println("You can't add products after paid");
+                        break;
+                    }
+
+                    String m = scanner.nextLine();
+                    if (m.isEmpty()) continue;
+                    int move2 = Integer.parseInt(m);
                     customer.addProduct(move2);
                     break;
                 }
                 case 3: {
-                    int move2 = Integer.parseInt(scanner.nextLine());
+                    if (customer.paid()) {
+                        System.out.println("You can't remove products after paid");
+                        break;
+                    }
+
+                    String m = scanner.nextLine();
+                    if (m.isEmpty()) continue;
+                    int move2 = Integer.parseInt(m);
                     customer.removeProduct(move2);
                     break;
                 }
@@ -84,12 +99,14 @@ public class Main {
                     break;
                 }
                 case 6: {
-                    int move2 = Integer.parseInt(scanner.nextLine());
+                    String m = scanner.nextLine();
+                    if (m.isEmpty()) continue;
+                    double move2 = Double.parseDouble(m);
                     customer.deposit(move2);
                     break;
                 }
                 case 7: {
-                    System.out.println(customer.checkBalance());
+                    customer.printBalance();
                     break;
                 }
                 case 8: {
@@ -141,6 +158,16 @@ public class Main {
 
                     break;
                 }
+                case 11: {
+                    ArrayList<ArrayList<Product>> Orders = customer.getOrders();
+                    for (int i = 0; i < Orders.size(); i++) {
+                        AtomicReference<Double> total = new AtomicReference<>((double) 0);
+                        Orders.get(i).stream().forEach(p-> total.updateAndGet(v -> new Double((double) (v + p.getPrice()))));
+                        System.out.printf("Order %d   |   Total: %f:\n", i, total.get());
+                        Orders.get(i).stream().forEach(p -> System.out.printf("  - [%d] %s | %f\n", p.getId(), p.getTitle(), p.getPrice()));
+                    }
+                    break;
+                }
             }
         }
     }
@@ -157,6 +184,7 @@ public class Main {
     public static void main(String[] args) {
         initProducts();
         menuMoves.put(10, "Show products filtered by price");
+        menuMoves.put(11, "Show orders history");
         userMenuLoop();
     }
 }
